@@ -6,20 +6,20 @@ import "./Form.css";
 const Form = () => {
   const [query, setQuery] = useState("");
   const [searchedMovieList, setSearchedMovieList] = useState([]);
-  const [selectedMovie, setSelectedMovie] = useState(undefined);
-  const [movie, setMovie] = useState(undefined);
-  const [castAndCrews, setCastAndCrews] = useState([]);
+  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [movie, setMovie] = useState(null);
+  const [cast, setCast] = useState([]);
+  const [crew, setCrew] = useState([]);
   const [videos, setVideos] = useState([]);
   const [photos, setPhotos] = useState([]);
-  const [selectedCast, setSelectedCast] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedTab, setSelectedTab] = useState("cast");
   const navigate = useNavigate();
   let { movieId } = useParams();
 
   const BEARER_TOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5YTdiNmUyNGJkNWRkNjhiNmE1ZWFjZjgyNWY3NGY5ZCIsIm5iZiI6MTcyOTI5NzI5Ny4wNzMzNTEsInN1YiI6IjY2MzhlZGM0MmZhZjRkMDEzMGM2NzM3NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ZIX4EF2yAKl6NwhcmhZucxSQi1rJDZiGG80tDd6_9XI";
 
-
   const handleSearch = useCallback(() => {
+    if (query.trim() === "") return;
     axios({
       method: "get",
       url: `https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=false&language=en-US&page=1`,
@@ -72,14 +72,13 @@ const Form = () => {
         },
       });
       alert("Movie saved successfully!");
-      navigate("/main/movies"); 
+      navigate("/main/movies");
     } catch (error) {
       console.error("Error saving movie:", error);
       alert("Failed to save the movie. Please try again.");
     }
   };
 
-  
   useEffect(() => {
     if (movieId) {
       axios.get(`/movies/${movieId}`).then((response) => {
@@ -98,7 +97,6 @@ const Form = () => {
     }
   }, [movieId]);
 
- 
   useEffect(() => {
     if (selectedMovie) {
       axios({
@@ -108,7 +106,8 @@ const Form = () => {
           Authorization: BEARER_TOKEN,
         },
       }).then((response) => {
-        setCastAndCrews(response.data.cast);
+        setCast(response.data.cast);
+        setCrew(response.data.crew);
       });
 
       axios({
@@ -118,7 +117,7 @@ const Form = () => {
           Authorization: BEARER_TOKEN,
         },
       }).then((response) => {
-        setVideos(response.data.results);
+        setVideos(response.data.results.filter((video) => video.type === "Trailer"));
       });
 
       axios({
@@ -133,160 +132,186 @@ const Form = () => {
     }
   }, [selectedMovie]);
 
-  const openCastModal = (cast) => {
-    setSelectedCast(cast);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setSelectedCast(null);
-    setIsModalOpen(false);
-  };
-
   return (
     <div className="form-container">
-      <h1>{movieId !== undefined ? "Edit " : "Create "} Movie</h1>
+      <h1>{movieId ? "Edit " : "Create "} Movie</h1>
 
-      {movieId === undefined && (
-        <div className="search-section">
-          <div className="search-bar">
-            <input
-              type="text"
-              placeholder="Search Movie..."
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-            />
-            <button type="button" onClick={handleSearch}>
-              Search
-            </button>
-            <button type="button" onClick={handleSave}>
-              Save Movie
-            </button>
-          </div>
-          <div className="search-results">
-            <div className="search-grid">
-              {searchedMovieList.map((movie) => (
-                <div
-                  key={movie.id}
-                  className="search-item"
-                  onClick={() => handleSelectMovie(movie)}
-                >
-                  {movie.poster_path ? (
-                    <img
-                      className="search-poster"
-                      src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
-                      alt={movie.original_title || movie.title}
-                    />
-                  ) : (
-                    <div className="no-poster">No Poster</div>
-                  )}
-                  <p className="movie-title">{movie.original_title || movie.title}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Search Bar & Button stays at the top */}
+      <div className="search-bar">
+        <input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          type="text"
+          placeholder="Search for a movie"
+        />
+        <button onClick={handleSearch}>Search</button>
+      </div>
 
+      {/* Display the movie details if selected */}
       {selectedMovie && (
-        <div className="movie-detail-container">
+        <>
           <div className="movie-header">
             <img
               className="movie-poster"
-              src={`https://image.tmdb.org/t/p/original/${selectedMovie.poster_path}`}
-              alt={selectedMovie.original_title}
+              src={selectedMovie.poster_path
+                ? `https://image.tmdb.org/t/p/original/${selectedMovie.poster_path}`
+                : "https://via.placeholder.com/200x300?text=No+Image"
+              }
+              alt={selectedMovie.original_title || "No Poster Available"}
             />
-            <div className="movie-overview">
-              <h2>{selectedMovie.original_title}</h2>
-              <p>{selectedMovie.overview}</p>
-              <div className="movie-details">
-                <span>Popularity: {selectedMovie.popularity}</span>
-                <span>Release Date: {selectedMovie.release_date}</span>
-                <span>Vote Average: {selectedMovie.vote_average}</span>
+            <div className="movie-details-container">
+              <h2 className="movie-title">{selectedMovie.original_title}</h2>
+              <p className="movie-overview">{selectedMovie.overview}</p>
+              <div className="details-list">
+                <div className="detail-item">
+                  Popularity
+                  <span>{selectedMovie.popularity}</span>
+                </div>
+                <div className="detail-item">
+                  Release Date
+                  <span>{selectedMovie.release_date}</span>
+                </div>
+                <div className="detail-item">
+                  Vote Average
+                  <span>{selectedMovie.vote_average} / 10</span>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="tabs-container">
-            <div className="tabs-content">
-              <h3>Cast & Crew</h3>
+          {/* Tabs */}
+          <div className="tabs">
+            <button
+              className={selectedTab === "cast" ? "active-tab" : ""}
+              onClick={() => setSelectedTab("cast")}
+            >
+              Cast
+            </button>
+            <button
+              className={selectedTab === "crew" ? "active-tab" : ""}
+              onClick={() => setSelectedTab("crew")}
+            >
+              Crew
+            </button>
+            <button
+              className={selectedTab === "videos" ? "active-tab" : ""}
+              onClick={() => setSelectedTab("videos")}
+            >
+              Videos
+            </button>
+            <button
+              className={selectedTab === "photos" ? "active-tab" : ""}
+              onClick={() => setSelectedTab("photos")}
+            >
+              Photos
+            </button>
+          </div>
+
+          <div className="tabs-content">
+            {selectedTab === "cast" && (
               <div className="horizontal-scroll">
                 <ul className="cast-crew-list">
-                  {castAndCrews.map((cast) => (
-                    <li
-                      key={cast.id}
-                      className="cast-item"
-                      onClick={() => openCastModal(cast)}
-                    >
-                      {cast.profile_path ? (
+                  {cast.map((castMember) => (
+                    <li key={castMember.id} className="cast-item">
+                      {castMember.profile_path ? (
                         <img
                           className="cast-photo"
-                          src={`https://image.tmdb.org/t/p/w200${cast.profile_path}`}
-                          alt={cast.name}
+                          src={`https://image.tmdb.org/t/p/w200${castMember.profile_path}`}
+                          alt={castMember.name}
                         />
                       ) : (
                         <div className="no-image">No Image</div>
                       )}
-                      <p>{cast.name}</p>
-                      <p className="character">{cast.character}</p>
+                      <p>{castMember.name}</p>
+                      <p className="character">{castMember.character}</p>
                     </li>
                   ))}
                 </ul>
               </div>
-              <h3>Videos</h3>
+            )}
+            {selectedTab === "crew" && (
               <div className="horizontal-scroll">
-                <div className="videos-container">
-                  {videos.map((video) => (
+                <ul className="cast-crew-list">
+                  {crew.map((crewMember) => (
+                    <li key={crewMember.id} className="cast-item">
+                      {crewMember.profile_path ? (
+                        <img
+                          className="cast-photo"
+                          src={`https://image.tmdb.org/t/p/w200${crewMember.profile_path}`}
+                          alt={crewMember.name}
+                        />
+                      ) : (
+                        <div className="no-image">No Image</div>
+                      )}
+                      <p>{crewMember.name}</p>
+                      <p className="character">{crewMember.job}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {selectedTab === "videos" && (
+              <div className="videos">
+                {videos.map((video) => (
+                  <div key={video.id} className="video">
                     <iframe
-                      key={video.id}
-                      className="video-frame"
+                      width="560"
+                      height="315"
                       src={`https://www.youtube.com/embed/${video.key}`}
                       title={video.name}
                       allowFullScreen
                     ></iframe>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
-              <h3>Photos</h3>
-              <div className="horizontal-scroll">
-                <div className="photos-row">
-                  {photos.map((photo) => (
-                    <img
-                      key={photo.file_path}
-                      src={`https://image.tmdb.org/t/p/original${photo.file_path}`}
-                      alt="Movie Scene"
-                      className="photo-thumbnail"
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {isModalOpen && selectedCast && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={closeModal}>
-              &times;
-            </span>
-            <h2>{selectedCast.name}</h2>
-            {selectedCast.profile_path ? (
-              <img
-                src={`https://image.tmdb.org/t/p/original${selectedCast.profile_path}`}
-                alt={selectedCast.name}
-                className="modal-image"
-              />
-            ) : (
-              <div className="no-image">No Image Available</div>
             )}
-            <p>Character: {selectedCast.character}</p>
+            {selectedTab === "photos" && (
+              <div className="photos">
+                {photos.map((photo) => (
+                  <img
+                    key={photo.file_path}
+                    src={`https://image.tmdb.org/t/p/w500${photo.file_path}`}
+                    alt="Movie photo"
+                    className="photo-item"
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="action-buttons">
+            <button onClick={handleSave}>Save</button>
+          </div>
+        </>
+      )}
+
+      {/* Searched Movies */}
+      {searchedMovieList.length > 0 && (
+        <div className="searched-movies">
+          <h2>Search Results</h2>
+          <div className="horizontal-scroll">
+            <ul className="searched-movie-list">
+              {searchedMovieList.map((movie) => (
+                <li
+                  key={movie.id}
+                  className="searched-movie-item"
+                  onClick={() => handleSelectMovie(movie)}
+                >
+                  {movie.poster_path ? (
+                    <img
+                      src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
+                      alt={movie.title}
+                    />
+                  ) : (
+                    <div>No Poster</div>
+                  )}
+                  <p>{movie.title}</p>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       )}
-
-      <Outlet />
     </div>
   );
 };

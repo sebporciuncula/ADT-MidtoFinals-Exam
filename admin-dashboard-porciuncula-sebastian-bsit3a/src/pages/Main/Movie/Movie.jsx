@@ -4,7 +4,7 @@ import "./Movie.css";
 const Movie = () => {
   return (
     <div className="movie-page">
-      <h1>Movie Lists</h1>
+      <h1>Movies</h1>
 
       <Outlet />
     </div>

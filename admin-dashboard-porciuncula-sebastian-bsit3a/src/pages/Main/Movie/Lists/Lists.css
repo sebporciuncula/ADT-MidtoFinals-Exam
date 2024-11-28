@@ -52,15 +52,15 @@
 
 .movie-lists th {
   cursor: pointer;
-  background-color: #e0dfdf;
+  background-color: #d6e1fb;
 }
 
 .movie-lists tr:nth-child(even) {
-  background-color: #fbfbfb;
+  background-color: #d1f5fc;
 }
 
 .movie-lists tr:hover {
-  background-color: #f1f1f1;
+  background-color: #87c4f9;
 }
 
 .movie-lists button {
