@@ -1,3 +1,4 @@
+// Form.js
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
@@ -16,7 +17,8 @@ const Form = () => {
   const navigate = useNavigate();
   let { movieId } = useParams();
 
-  const BEARER_TOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5YTdiNmUyNGJkNWRkNjhiNmE1ZWFjZjgyNWY3NGY5ZCIsIm5iZiI6MTcyOTI5NzI5Ny4wNzMzNTEsInN1YiI6IjY2MzhlZGM0MmZhZjRkMDEzMGM2NzM3NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ZIX4EF2yAKl6NwhcmhZucxSQi1rJDZiGG80tDd6_9XI";
+  const BEARER_TOKEN =
+    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5YTdiNmUyNGJkNWRkNjhiNmE1ZWFjZjgyNWY3NGY5ZCIsIm5iZiI6MTcyOTI5NzI5Ny4wNzMzNTEsInN1YiI6IjY2MzhlZGM0MmZhZjRkMDEzMGM2NzM3NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ZIX4EF2yAKl6NwhcmhZucxSQi1rJDZiGG80tDd6_9XI";
 
   const handleSearch = useCallback(() => {
     if (query.trim() === "") return;
@@ -34,6 +36,7 @@ const Form = () => {
 
   const handleSelectMovie = (movie) => {
     setSelectedMovie(movie);
+    setSearchedMovieList([]);
   };
 
   const handleSave = async () => {
@@ -136,26 +139,64 @@ const Form = () => {
     <div className="form-container">
       <h1>{movieId ? "Edit " : "Create "} Movie</h1>
 
-      {/* Search Bar & Button stays at the top */}
-      <div className="search-bar">
-        <input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          type="text"
-          placeholder="Search for a movie"
-        />
-        <button onClick={handleSearch}>Search</button>
-      </div>
+      {!movieId && (
+        <div className="search-bar">
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            type="text"
+            placeholder="Search for a movie"
+          />
+          <button onClick={handleSearch}>Search</button>
+        </div>
+      )}
 
-      {/* Display the movie details if selected */}
+      {searchedMovieList.length > 0 && !selectedMovie && (
+        <div className="search-results-container">
+          <table className="search-results-table">
+            <thead>
+              <tr>
+                <th>Poster</th>
+                <th>Movie Title</th>
+                <th>Release Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {searchedMovieList.map((movie) => (
+                <tr key={movie.id}>
+                  <td>
+                    <img
+                      src={
+                        movie.poster_path
+                          ? `https://image.tmdb.org/t/p/w92${movie.poster_path}`
+                          : "https://via.placeholder.com/50x75?text=No+Image"
+                      }
+                      alt={movie.title}
+                      className="movie-poster-thumbnail"
+                    />
+                  </td>
+                  <td>{movie.title}</td>
+                  <td>{movie.release_date}</td>
+                  <td>
+                    <button onClick={() => handleSelectMovie(movie)}>Select</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
       {selectedMovie && (
         <>
           <div className="movie-header">
             <img
               className="movie-poster"
-              src={selectedMovie.poster_path
-                ? `https://image.tmdb.org/t/p/original/${selectedMovie.poster_path}`
-                : "https://via.placeholder.com/200x300?text=No+Image"
+              src={
+                selectedMovie.poster_path
+                  ? `https://image.tmdb.org/t/p/original/${selectedMovie.poster_path}`
+                  : "https://via.placeholder.com/200x300?text=No+Image"
               }
               alt={selectedMovie.original_title || "No Poster Available"}
             />
@@ -179,7 +220,6 @@ const Form = () => {
             </div>
           </div>
 
-          {/* Tabs */}
           <div className="tabs">
             <button
               className={selectedTab === "cast" ? "active-tab" : ""}
@@ -244,21 +284,21 @@ const Form = () => {
                         <div className="no-image">No Image</div>
                       )}
                       <p>{crewMember.name}</p>
-                      <p className="character">{crewMember.job}</p>
+                      <p>{crewMember.job}</p>
                     </li>
                   ))}
                 </ul>
               </div>
             )}
             {selectedTab === "videos" && (
-              <div className="videos">
+              <div className="videos-list">
                 {videos.map((video) => (
-                  <div key={video.id} className="video">
+                  <div key={video.id} className="video-item">
                     <iframe
-                      width="560"
-                      height="315"
-                      src={`https://www.youtube.com/embed/${video.key}`}
                       title={video.name}
+                      width="320"
+                      height="180"
+                      src={`https://www.youtube.com/embed/${video.key}`}
                       allowFullScreen
                     ></iframe>
                   </div>
@@ -266,52 +306,25 @@ const Form = () => {
               </div>
             )}
             {selectedTab === "photos" && (
-              <div className="photos">
+              <div className="photos-list">
                 {photos.map((photo) => (
-                  <img
-                    key={photo.file_path}
-                    src={`https://image.tmdb.org/t/p/w500${photo.file_path}`}
-                    alt="Movie photo"
-                    className="photo-item"
-                  />
+                  <div key={photo.file_path} className="photo-item">
+                    <img
+                      src={`https://image.tmdb.org/t/p/w500${photo.file_path}`}
+                      alt="Movie backdrop"
+                    />
+                  </div>
                 ))}
               </div>
             )}
           </div>
 
           <div className="action-buttons">
-            <button onClick={handleSave}>Save</button>
+            <button onClick={handleSave}>Save Movie</button>
           </div>
         </>
       )}
-
-      {/* Searched Movies */}
-      {searchedMovieList.length > 0 && (
-        <div className="searched-movies">
-          <h2>Search Results</h2>
-          <div className="horizontal-scroll">
-            <ul className="searched-movie-list">
-              {searchedMovieList.map((movie) => (
-                <li
-                  key={movie.id}
-                  className="searched-movie-item"
-                  onClick={() => handleSelectMovie(movie)}
-                >
-                  {movie.poster_path ? (
-                    <img
-                      src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
-                      alt={movie.title}
-                    />
-                  ) : (
-                    <div>No Poster</div>
-                  )}
-                  <p>{movie.title}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      )}
+      <Outlet />
     </div>
   );
 };

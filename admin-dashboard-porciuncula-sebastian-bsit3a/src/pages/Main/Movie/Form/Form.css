@@ -1,4 +1,5 @@
 /* Global Styles */
+/* Global Styles */
 body {
   font-family: Arial, sans-serif;
   background-color: #f5f5f5;
@@ -42,6 +43,120 @@ body {
 
 .search-bar button:hover {
   background-color: #0056b3;
+}
+/* General Table Styling */
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.results-table th, .results-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.results-table th {
+  background-color: #f4f4f4;
+}
+
+.search-item-poster {
+  width: 80px;
+  height: 120px;
+  object-fit: cover;
+}
+
+.table-controls {
+  margin: 10px 0;
+}
+
+.table-controls button {
+  margin-right: 10px;
+  padding: 8px 12px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.table-controls button:hover {
+  background-color: #0056b3;
+}
+
+/* Search Results Table */
+.search-results-container {
+  margin-top: 20px;
+}
+
+.search-results-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.search-results-table th,
+.search-results-table td {
+  padding: 15px 10px;
+  text-align: left;
+}
+
+.search-results-table th {
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border-bottom: 2px solid #ddd;
+}
+
+.search-results-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.search-results-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.search-results-table td {
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+  color: #333;
+}
+
+.search-results-table .action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.search-results-table .btn-edit {
+  background-color: #28a745;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.search-results-table .btn-edit:hover {
+  background-color: #218838;
+}
+
+.search-results-table .btn-delete {
+  background-color: #dc3545;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.search-results-table .btn-delete:hover {
+  background-color: #c82333;
 }
 
 /* Section Header */
@@ -87,16 +202,16 @@ body {
 
 .movie-details-container {
   flex: 1;
-  background-color: rgb(31, 34, 71);;
+  background-color: rgb(31, 34, 71);
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .movie-title {
-  font-size: 32px;
+  font-size: 40px;
   font-weight: bold;
-  color: #007bff;
+  color: #02c1f6;
   margin-bottom: 15px;
 }
 
@@ -131,7 +246,6 @@ body {
   margin-top: 5px;
 }
 
-
 /* Horizontal Scroll Container */
 .horizontal-scroll {
   overflow-x: auto;
@@ -142,12 +256,12 @@ body {
 }
 
 .horizontal-scroll::-webkit-scrollbar {
-  height: 6px;
+  height: 12px;
 }
 
 .horizontal-scroll::-webkit-scrollbar-thumb {
-  background-color: #bbb;
-  border-radius: 5px;
+  background-color: #6b6b6b;
+  border-radius: 2px;
 }
 
 .horizontal-scroll::-webkit-scrollbar-thumb:hover {
@@ -157,7 +271,6 @@ body {
 .horizontal-scroll::-webkit-scrollbar-track {
   background-color: #f1f1f1;
 }
-
 
 /* Cast Section */
 .cast-crew-list {
@@ -271,6 +384,7 @@ body {
   margin-top: 20px;
   border-bottom: 2px solid #ddd;
   margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
 .tabs button {
@@ -294,6 +408,12 @@ body {
 
 .tabs-content {
   padding: 20px 0;
+  max-height: 600px;
+  overflow-y: auto;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .horizontal-scroll {
@@ -312,7 +432,8 @@ body {
   flex-shrink: 0;
 }
 
-.cast-photo, .photo {
+.cast-photo,
+.photo {
   width: 100%;
   height: 200px;
   object-fit: cover;
@@ -341,14 +462,22 @@ body {
 
 .photos-row {
   display: flex;
-  gap: 10px;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  overflow-y: auto;
 }
 
 .photos-row img {
-  width: 200px;
-  height: 120px;
+  width: 220px;
+  height: 130px;
   object-fit: cover;
   border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.photos-row img:hover {
+  transform: scale(1.05);
 }
 
 .input-group {

@@ -63,14 +63,6 @@ const Lists = () => {
 
   return (
     <div className='lists-container'>
-      <div className='search-container'>
-        <input
-          type='text'
-          placeholder='Search by title...'
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
       <div className='create-container'>
         <button
           type='button'
@@ -80,6 +72,14 @@ const Lists = () => {
         >
           Create new
         </button>
+      </div>
+      <div className='search-container'>
+        <input
+          type='text'
+          placeholder='Search by title...'
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
       </div>
       <div className='table-container'>
         <table className='movie-lists'>

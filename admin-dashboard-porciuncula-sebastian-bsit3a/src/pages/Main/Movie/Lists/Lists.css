@@ -17,7 +17,7 @@
 
 .create-container {
   margin-bottom: 20px;
-  text-align: center;
+  text-align: right;
 }
 
 .create-container button {
@@ -60,7 +60,7 @@
 }
 
 .movie-lists tr:hover {
-  background-color: #87c4f9;
+  background-color: #c0d6ea;
 }
 
 .movie-lists button {
