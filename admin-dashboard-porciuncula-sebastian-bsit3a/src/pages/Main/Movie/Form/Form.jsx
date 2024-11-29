@@ -120,7 +120,9 @@ const Form = () => {
           Authorization: BEARER_TOKEN,
         },
       }).then((response) => {
-        setVideos(response.data.results.filter((video) => video.type === "Trailer"));
+        setVideos(
+          response.data.results.filter((video) => video.type === "Trailer")
+        );
       });
 
       axios({
@@ -137,7 +139,7 @@ const Form = () => {
 
   return (
     <div className="form-container">
-      <h1>{movieId ? "Edit " : "Create "} Movie</h1>
+      <h1>{movieId ? "Edit Movie" : "Add a Movie"}</h1>
 
       {!movieId && (
         <div className="search-bar">
@@ -150,16 +152,15 @@ const Form = () => {
           <button onClick={handleSearch}>Search</button>
         </div>
       )}
-
       {searchedMovieList.length > 0 && !selectedMovie && (
         <div className="search-results-container">
           <table className="search-results-table">
             <thead>
               <tr>
-                <th>Poster</th>
-                <th>Movie Title</th>
+                <th>Movies</th>
+                <th>Title</th>
                 <th>Release Date</th>
-                <th>Actions</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -176,10 +177,15 @@ const Form = () => {
                       className="movie-poster-thumbnail"
                     />
                   </td>
-                  <td>{movie.title}</td>
+                  <td className="movie-title">{movie.title}</td>
                   <td>{movie.release_date}</td>
                   <td>
-                    <button onClick={() => handleSelectMovie(movie)}>Select</button>
+                    <button
+                      className="select-button"
+                      onClick={() => handleSelectMovie(movie)}
+                    >
+                      Select
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -205,16 +211,13 @@ const Form = () => {
               <p className="movie-overview">{selectedMovie.overview}</p>
               <div className="details-list">
                 <div className="detail-item">
-                  Popularity
-                  <span>{selectedMovie.popularity}</span>
+                  Popularity: <span>{selectedMovie.popularity}</span>
                 </div>
                 <div className="detail-item">
-                  Release Date
-                  <span>{selectedMovie.release_date}</span>
+                  Release Date: <span>{selectedMovie.release_date}</span>
                 </div>
                 <div className="detail-item">
-                  Vote Average
-                  <span>{selectedMovie.vote_average} / 10</span>
+                  Vote Average: <span>{selectedMovie.vote_average} / 10</span>
                 </div>
               </div>
             </div>

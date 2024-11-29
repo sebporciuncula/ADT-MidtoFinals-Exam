@@ -70,7 +70,7 @@ const Lists = () => {
             navigate('/main/movies/form');
           }}
         >
-          Create new
+          Add Movie
         </button>
       </div>
       <div className='search-container'>

@@ -21,9 +21,10 @@
 }
 
 .create-container button {
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #63cff7;
+  padding: 15px 30px;
+  font-size: 20px;
+  font-style: italic;
+  background-color: #340e8b;
   color: white;
   border: none;
   cursor: pointer;
