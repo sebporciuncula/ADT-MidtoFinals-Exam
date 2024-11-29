@@ -1,0 +1,81 @@
+.lists-container {
+  padding: 20px;
+}
+
+.search-container {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.search-container input {
+  padding: 10px;
+  width: 300px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.create-container {
+  margin-bottom: 20px;
+  text-align: right;
+}
+
+.create-container button {
+  padding: 15px 30px;
+  font-size: 20px;
+  font-style: italic;
+  background-color: #340e8b;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.create-container button:hover {
+  background-color: #45a049;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.movie-lists {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.movie-lists th,
+.movie-lists td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.movie-lists th {
+  cursor: pointer;
+  background-color: #d6e1fb;
+}
+
+.movie-lists tr:nth-child(even) {
+  background-color: #d1f5fc;
+}
+
+.movie-lists tr:hover {
+  background-color: #c0d6ea;
+}
+
+.movie-lists button {
+  padding: 5px 10px;
+  margin-right: 10px;
+  font-size: 14px;
+  background-color: #3e0094;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.movie-lists button:hover {
+  background-color: #e64a4a;
+}
+

@@ -1,0 +1,130 @@
+/* Main Container */
+.main {
+  display: flex;
+  height: 100vh;
+  background-color: #f4f6f9;
+}
+
+/* Flex container to hold sidebar and main content */
+.main .container {
+  display: flex;
+  width: 100%;
+}
+
+/* Navigation sidebar */
+.main .container .navigation {
+  background-color: #1d3c6b;
+  color: #fff;
+  width: 240px;
+  padding-top: 60px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+/* Navigation list */
+.main .container .navigation ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Navigation links */
+.main .container .navigation ul li {
+  padding: 15px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: capitalize;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-left: 4px solid transparent;
+}
+
+.main .container .navigation ul li:hover {
+  background-color: #2b4979;
+  border-left-color: #1b82e1;
+}
+
+/* Active navigation link */
+.main .container .navigation ul li.active {
+  background-color: #2b4979;
+  border-left-color: #1b82e1;
+}
+
+/* Links within the navigation */
+.main .container .navigation ul li a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Logout button */
+.main .container .navigation ul li.logout {
+  margin-top: auto;
+  background-color: #9c0202;
+  border-top: 5px solid #ccc;
+  text-align: center;
+}
+
+.main .container .navigation ul li.logout a {
+  color: white;
+  font-weight: bold;
+}
+
+/* Main content area */
+.main .container .outlet {
+  flex-grow: 1;
+  padding: 2rem;
+  background-color: #fff;
+  overflow-y: auto;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+/* General body styles */
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .main {
+    flex-direction: column;
+  }
+
+  .main .container {
+    flex-direction: column;
+  }
+
+  .main .container .navigation {
+    width: 100%;
+    height: auto;
+    padding-top: 20px;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .main .container .outlet {
+    padding: 1rem;
+  }
+
+  .main .container .navigation ul {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .main .container .navigation ul li {
+    flex: 1;
+    padding: 12px 20px;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .main .container .navigation ul li.logout {
+    margin-top: 10px;
+    width: 100%;
+  }
+}

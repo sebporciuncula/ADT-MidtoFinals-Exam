@@ -1,0 +1,19 @@
+.movie-page {
+  text-align: center;
+  background-color: rgb(193, 218, 255);
+  color: #3D52A0;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.movie-page h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #0736e0;
+}
+
+.movie-page p {
+  font-size: 1.2rem;
+  color: #8697C4;
+}

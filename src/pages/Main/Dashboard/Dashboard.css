@@ -1,0 +1,262 @@
+/* Main Container */
+.dashboard {
+  padding: 2rem;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+/* Dashboard Title */
+.dashboard-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1d3c6b;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+/* Search Container */
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.search-input {
+  width: 50%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: #007bff;
+}
+
+/* Movies Section */
+.movies-section {
+  margin-bottom: 40px;
+}
+
+.trending-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.trending-header h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1d3c6b;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 5px;
+}
+
+.trending-buttons button {
+  margin-left: 10px;
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #007bff;
+  background-color: #fff;
+  color: #007bff;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.trending-buttons button.active,
+.trending-buttons button:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* Movie Cards Container - Table layout with 5 movies per row */
+.movie-cards {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 columns */
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.movie-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.movie-card:hover {
+  transform: scale(1.05); /* Add a slight zoom effect on hover */
+}
+
+.movie-card img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.movie-card h3 {
+  font-size: 18px;
+  color: #333;
+  padding: 10px;
+  font-weight: 600;
+}
+
+/* Expanded Movie View - Flex layout for poster on left, details on right */
+.expanded-movie-view {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: row;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* Poster section in expanded view */
+.expanded-poster {
+  flex: 1;
+  max-width: 350px;
+  max-height: 500px;
+  margin-right: 20px;
+}
+
+.expanded-poster img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* Movie details section */
+.movie-details {
+  flex: 2;
+  color: white;
+  font-size: 16px;
+  text-align: left;
+  padding: 20px;
+  max-width: 600px;
+  background-color: #c8c8c8;
+  border-radius: 8px;
+}
+
+.movie-details h3 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.movie-details p {
+  margin: 10px 0;
+}
+
+/* Action buttons section (Add to Trending & Close) */
+.expanded-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.expanded-actions button {
+  padding: 10px 20px;
+  background-color: #f8f9fa;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  color: black;
+}
+
+.expanded-actions button:hover {
+  background-color: #e0e0e0;
+}
+
+.close-expanded-view {
+  background-color: red;
+  color: white;
+}
+
+.close-expanded-view:hover {
+  background-color: #d9534f;
+}
+
+.add-to-trending {
+  background-color: #28a745;
+  color: white;
+}
+
+.add-to-trending:hover {
+  background-color: #218838;
+}
+
+/* Add Movie Selector and Buttons */
+.movie-selector-dialog {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.movie-selector-list {
+  margin-top: 20px;
+}
+
+.movie-selection-actions button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #f8f9fa;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.movie-selection-actions button:hover {
+  background-color: #e0e0e0;
+}
+
+/* Loader */
+.movies-section p {
+  text-align: center;
+  font-size: 18px;
+  color: #333;
+}
+
+/* Responsiveness */
+@media (max-width: 1024px) {
+  .movie-cards {
+    grid-template-columns: repeat(4, 1fr); /* 4 columns on medium screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .movie-cards {
+    grid-template-columns: repeat(3, 1fr); /* 3 columns on small screens */
+  }
+
+  .search-input {
+    width: 80%;
+  }
+
+  .movie-card {
+    width: 140px;
+  }
+
+  .trending-buttons button {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+}
