@@ -56,7 +56,9 @@ function Dashboard() {
 
   // Handle Movie Selection
   const handleMovieSelect = (movie) => {
-    setSelectedMovie(movie);
+    setSelectedMovie((prevMovie) =>
+      prevMovie && prevMovie.tmdbId === movie.tmdbId ? null : movie
+    );
   };
 
   // Add Movie to Selected Trending Category
@@ -69,18 +71,15 @@ function Dashboard() {
         }
         return updatedState;
       });
-      setShowMovieSelector(false);
-      setSelectedMovie(null);
+      // Do not hide the movie selector
+      // setShowMovieSelector(false);  <-- We removed this line
+      setSelectedMovie(null); // Reset selected movie after adding
     }
   };
 
-  // Chunk saved movies into groups of 5
-  const chunkMovies = (movies, size) => {
-    const result = [];
-    for (let i = 0; i < movies.length; i += size) {
-      result.push(movies.slice(i, i + size));
-    }
-    return result;
+  // Close Expanded View
+  const closeExpandedView = () => {
+    setSelectedMovie(null);
   };
 
   return (
@@ -98,7 +97,7 @@ function Dashboard() {
           </div>
         </div>
 
-        {/* Show Selected Category and "Add Movie to Trending" Button */}
+        {/* Show Selected Category and Add Movie */}
         {selectedCategory && (
           <div className="view-trending-section">
             <h3>{`Trending ${selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}`}</h3>
@@ -115,70 +114,73 @@ function Dashboard() {
               )}
             </div>
 
-            {/* Add Movie Button for Selected Category */}
+            {/* Movie Selector */}
             {showMovieSelector && (
               <div className="movie-selector-dialog">
                 <h3>Select a Movie</h3>
-                <div className="movie-selector-list">
-                  {savedMovies.length > 0 ? (
-                    <div className="horizontal-scroll">
-                      {chunkMovies(savedMovies, 5).map((movieRow, rowIndex) => (
-                        <div key={rowIndex} className="movie-row">
-                          {movieRow.map((movie) => (
-                            <div
-                              key={movie.tmdbId}
-                              className="movie-card"
-                              onClick={() => handleMovieSelect(movie)}
-                            >
-                              <img src={movie.posterPath} alt={movie.title} />
-                              <h3>{movie.title}</h3>
+                <div className="movie-grid-scrollable">
+                  <div className="movie-grid">
+                    {savedMovies.length > 0 ? (
+                      savedMovies.map((movie) => (
+                        <div
+                          key={movie.tmdbId}
+                          className={`movie-card ${selectedMovie?.tmdbId === movie.tmdbId ? "expanded" : ""}`}
+                          onClick={() => handleMovieSelect(movie)}
+                        >
+                          {/* If this movie is selected, expand it */}
+                          <div className={`movie-poster ${selectedMovie?.tmdbId === movie.tmdbId ? "expanded-poster" : ""}`}>
+                            <img src={movie.posterPath} alt={movie.title} />
+                          </div>
+                          <h3>{movie.title}</h3>
+
+                          {/* Expanded movie details */}
+                          {selectedMovie?.tmdbId === movie.tmdbId && (
+                            <div className="movie-details">
+                              <p><strong>Overview:</strong> {movie.overview}</p>
+                              <p><strong>Popularity:</strong> {movie.popularity}</p>
+                              <p><strong>Release Date:</strong> {movie.releaseDate}</p>
+                              {/* Add other details you want to show */}
                             </div>
-                          ))}
+                          )}
                         </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p>No movies found in your list.</p>
-                  )}
-                </div>
-                {selectedMovie && (
-                  <div className="movie-selection-actions">
-                    <p>Selected: {selectedMovie.title}</p>
-                    <button onClick={handleAddMovieToTrending}>
-                      Add to Trending {selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}
-                    </button>
-                    <button onClick={() => setShowMovieSelector(false)}>Cancel</button>
+                      ))
+                    ) : (
+                      <p>No movies found in your list.</p>
+                    )}
                   </div>
-                )}
+                </div>
               </div>
             )}
           </div>
         )}
+      </section>
 
-        {/* Expanded Movie Poster View */}
-        {selectedMovie && (
-          <div className="expanded-movie-view">
-            <div className="expanded-poster">
-              <img
-                src={selectedMovie.posterPath}
-                alt={selectedMovie.title}
-                className="expanded-img"
-              />
-            </div>
-            <div className="movie-details">
-              <h2>{selectedMovie.title}</h2>
-              <p><strong>Description: </strong>{selectedMovie.overview}</p>
-              <p><strong>Release Date: </strong>{selectedMovie.releaseDate}</p>
-              <p><strong>Popularity: </strong>{selectedMovie.popularity}</p>
-              <p><strong>Vote Average: </strong>{selectedMovie.voteAverage}</p>
-              <div className="expanded-actions">
-                <button onClick={handleAddMovieToTrending}>Add to Trending</button>
-                <button onClick={() => setSelectedMovie(null)} className="close-expanded-view">Cancel</button>
-              </div>
+      {/* Expanded Movie View - Fullscreen modal */}
+      {selectedMovie && (
+        <div className="expanded-movie-view">
+          <div className="expanded-poster">
+            <img src={selectedMovie.posterPath} alt={selectedMovie.title} />
+          </div>
+          <div className="movie-details">
+            <h3>{selectedMovie.title}</h3>
+            <p><strong>Overview:</strong> {selectedMovie.overview}</p>
+            <p><strong>Popularity:</strong> {selectedMovie.popularity}</p>
+            <p><strong>Release Date:</strong> {selectedMovie.releaseDate}</p>
+            {/* Add other details you want to show */}
+            <div className="expanded-actions">
+              <button
+                className="add-to-trending"
+                onClick={handleAddMovieToTrending}
+              >
+                Add to Trending
+              </button>
+              <button className="close-expanded-view" onClick={closeExpandedView}>
+                Close
+              </button>
             </div>
           </div>
-        )}
-      </section>
+        </div>
+      )}
     </div>
   );
 }

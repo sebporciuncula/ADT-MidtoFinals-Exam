@@ -81,6 +81,7 @@
   margin-bottom: 40px;
 }
 
+/* Movie Card Styling */
 .movie-card {
   background-color: #fff;
   border-radius: 8px;
@@ -109,7 +110,20 @@
   font-weight: 600;
 }
 
-/* Expanded Movie View - Flex layout for poster on left, details on right */
+/* Scrollable Container for Movie Grid */
+.movie-grid-scrollable {
+  max-height: 400px; /* Set the max height for the scrollable area */
+  overflow-y: auto;  /* Enable vertical scrolling when content overflows */
+  padding-right: 10px; /* To add space for the scrollbar */
+}
+
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Adjust as needed */
+  gap: 15px;
+}
+
+/* Expanded Movie View - Full-screen layout for poster on left, details on right */
 .expanded-movie-view {
   display: flex;
   justify-content: center;
@@ -120,63 +134,73 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.9); /* Darkened background */
   z-index: 1000;
   padding: 20px;
   overflow-y: auto;
+  gap: 30px;
 }
 
 /* Poster section in expanded view */
 .expanded-poster {
-  flex: 1;
+  width: 40%;
   max-width: 350px;
-  max-height: 500px;
-  margin-right: 20px;
+  margin-bottom: 20px;
 }
 
 .expanded-poster img {
   width: 100%;
   height: auto;
   border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* Movie details section */
 .movie-details {
-  flex: 2;
+  width: 60%;
+  max-width: 800px;
   color: white;
-  font-size: 16px;
+  font-size: 18px;
   text-align: left;
-  padding: 20px;
-  max-width: 600px;
-  background-color: #c8c8c8;
-  border-radius: 8px;
+  padding: 30px;
+  background-color: #333;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 .movie-details h3 {
-  font-size: 28px;
+  font-size: 32px;
   margin-bottom: 10px;
+  color:#f6f6f6
 }
 
 .movie-details p {
-  margin: 10px 0;
+  margin: 15px 0;
+}
+
+.movie-details span {
+  font-weight: bold;
+  color: #ffcb05;
 }
 
 /* Action buttons section (Add to Trending & Close) */
+/* Action buttons section (Add to Trending & Close) */
 .expanded-actions {
   display: flex;
-  flex-direction: column;
-  gap: 15px;
+  gap: 20px;
+  justify-content: center;
   margin-top: 20px;
 }
 
 .expanded-actions button {
-  padding: 10px 20px;
+  padding: 15px 30px;
   background-color: #f8f9fa;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 18px;
   color: black;
+  transition: background-color 0.3s;
 }
 
 .expanded-actions button:hover {
@@ -201,44 +225,68 @@
   background-color: #218838;
 }
 
+
 /* Add Movie Selector and Buttons */
-.movie-selector-dialog {
+/* Styling for the movie card */
+.movie-card {
+  width: 150px;
+  height: 250px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #fff;
-  padding: 20px;
+  background-color: #f9f9f9;
+  padding: 10px;
   border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
 
-.movie-selector-list {
+.movie-card img {
+  width: 120px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.movie-card h3 {
+  font-size: 14px;
+  text-align: center;
+  margin: 0;
+  color: #333;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+/* Adjustments for the dialog with action buttons */
+.movie-selection-actions {
   margin-top: 20px;
 }
 
 .movie-selection-actions button {
-  margin-top: 10px;
-  padding: 10px 20px;
-  background-color: #f8f9fa;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  margin: 5px;
 }
 
-.movie-selection-actions button:hover {
-  background-color: #e0e0e0;
-}
-
-/* Loader */
-.movies-section p {
-  text-align: center;
-  font-size: 18px;
-  color: #333;
+.movie-selector-dialog {
+  max-width: 600px;
+  margin: auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 /* Responsiveness */
 @media (max-width: 1024px) {
   .movie-cards {
     grid-template-columns: repeat(4, 1fr); /* 4 columns on medium screens */
+  }
+
+  .expanded-movie-view {
+    gap: 15px;
+    flex-direction: column;
   }
 }
 
@@ -258,5 +306,18 @@
   .trending-buttons button {
     padding: 6px 8px;
     font-size: 12px;
+  }
+
+  .expanded-movie-view {
+    flex-direction: column;
+  }
+
+  .expanded-poster {
+    width: 90%;
+  }
+
+  .movie-details {
+    width: 90%;
+    padding: 20px;
   }
 }
