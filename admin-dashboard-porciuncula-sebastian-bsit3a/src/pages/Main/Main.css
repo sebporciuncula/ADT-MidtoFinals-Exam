@@ -1,17 +1,15 @@
-/* Main Container */
+
 .main {
   display: flex;
   height: 100vh;
-  background-color: #f4f6f9;
+  background-color: rgb(15, 20, 61);
 }
 
-/* Flex container to hold sidebar and main content */
 .main .container {
   display: flex;
   width: 100%;
 }
 
-/* Navigation sidebar */
 .main .container .navigation {
   background-color: #1d3c6b;
   color: #fff;
@@ -25,14 +23,12 @@
   transition: transform 0.3s ease;
 }
 
-/* Navigation list */
 .main .container .navigation ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-/* Navigation links */
 .main .container .navigation ul li {
   padding: 15px 20px;
   font-size: 16px;
@@ -48,19 +44,18 @@
   border-left-color: #1b82e1;
 }
 
-/* Active navigation link */
+
 .main .container .navigation ul li.active {
   background-color: #2b4979;
   border-left-color: #1b82e1;
 }
 
-/* Links within the navigation */
+
 .main .container .navigation ul li a {
   text-decoration: none;
   color: inherit;
 }
 
-/* Logout button */
 .main .container .navigation ul li.logout {
   margin-top: auto;
   background-color: #9c0202;
@@ -73,23 +68,20 @@
   font-weight: bold;
 }
 
-/* Main content area */
 .main .container .outlet {
   flex-grow: 1;
   padding: 2rem;
-  background-color: #fff;
+  background-color: rgb(182, 210, 247);
   overflow-y: auto;
   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
 }
 
-/* General body styles */
 body {
   font-family: 'Roboto', sans-serif;
   margin: 0;
   padding: 0;
 }
 
-/* Responsiveness */
 @media (max-width: 768px) {
   .main {
     flex-direction: column;
