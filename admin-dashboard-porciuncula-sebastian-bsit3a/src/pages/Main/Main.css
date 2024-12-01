@@ -41,13 +41,13 @@
 
 .main .container .navigation ul li:hover {
   background-color: #2b4979;
-  border-left-color: #1b82e1;
+  border-left-color: #004b91;
 }
 
 
 .main .container .navigation ul li.active {
-  background-color: #2b4979;
-  border-left-color: #1b82e1;
+  background-color: #4c6288;
+  border-left-color: #188efc;
 }
 
 

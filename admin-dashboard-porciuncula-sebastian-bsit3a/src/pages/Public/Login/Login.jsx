@@ -48,10 +48,8 @@ function Login() {
         headers: { 'Access-Control-Allow-Origin': '*' },
       });
   
-      // Store the access token in localStorage
       localStorage.setItem('accessToken', response.data.access_token);
-  
-      // Navigate to the dashboard
+
       navigate('/main/dashboard');
       setStatus('idle');
     } catch (error) {
@@ -70,37 +68,40 @@ function Login() {
       <div className='main-container'>
         <h3>Login</h3>
         <form>
-          <div className='form-container'>
-            <div>
-              <div className='form-group'>
-                <label>E-mail:</label>
-                <input
-                  type='text'
-                  name='email'
-                  ref={emailRef}
-                  onChange={(e) => handleOnChange(e, 'email')}
-                />
-              </div>
+          <div className='forms-container'>
+            <div className='form-group'>
+              <label>E-mail:</label>
+              <input
+                type='text'
+                name='email'
+                ref={emailRef}
+                onChange={(e) => handleOnChange(e, 'email')}
+              />
               {debounceState && isFieldsDirty && email === '' && (
                 <span className='errors'>This field is required</span>
               )}
             </div>
-            <div>
-              <div className='form-group'>
-                <label>Password:</label>
+
+            <div className='form-group'>
+              <label>Password:</label>
+              <div className='input-container'>
                 <input
                   type={isShowPassword ? 'text' : 'password'}
                   name='password'
                   ref={passwordRef}
                   onChange={(e) => handleOnChange(e, 'password')}
                 />
+                <div className='show-password' onClick={handleShowPassword}>
+                  {isShowPassword ? (
+                    <i className="fa fa-eye-slash" aria-hidden="true"></i>
+                  ) : (
+                    <i className="fa fa-eye" aria-hidden="true"></i>
+                  )}
+                </div>
               </div>
               {debounceState && isFieldsDirty && password === '' && (
                 <span className='errors'>This field is required</span>
               )}
-            </div>
-            <div className='show-password' onClick={handleShowPassword}>
-              {isShowPassword ? 'Hide' : 'Show'} Password
             </div>
 
             <div className='submit-container'>
@@ -127,6 +128,7 @@ function Login() {
                 {status === 'idle' ? 'Login' : 'Loading'}
               </button>
             </div>
+
             <div className='register-container'>
               <a href='/register'>
                 <small>Register</small>

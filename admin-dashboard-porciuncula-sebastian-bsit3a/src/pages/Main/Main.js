@@ -1,10 +1,12 @@
-import { useEffect } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import './Main.css';
 
 function Main() {
   const accessToken = localStorage.getItem('accessToken');
   const navigate = useNavigate();
+  const location = useLocation(); 
+  const [activeLink, setActiveLink] = useState('');
 
   const handleLogout = () => {
     localStorage.removeItem('accessToken');
@@ -17,13 +19,24 @@ function Main() {
     }
   }, [accessToken]);
 
+  useEffect(() => {
+   
+    if (location.pathname.includes('dashboard')) {
+      setActiveLink('dashboard');
+    } else if (location.pathname.includes('movies')) {
+      setActiveLink('movies');
+    }
+  }, [location]);
+
   return (
     <div className="main">
       <div className="container">
         <div className="navigation">
           <ul>
-          <li><a href='/main/dashboard'>Dashboard</a></li>
-            <li>
+            <li className={activeLink === 'dashboard' ? 'active' : ''}>
+              <a href="/main/dashboard">Dashboard</a>
+            </li>
+            <li className={activeLink === 'movies' ? 'active' : ''}>
               <a href="/main/movies">Movies</a>
             </li>
             <li className="logout">

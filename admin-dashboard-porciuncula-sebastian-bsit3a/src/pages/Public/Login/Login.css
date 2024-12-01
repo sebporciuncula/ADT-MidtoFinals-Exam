@@ -21,7 +21,7 @@ h3 {
   color: #333;
 }
 
-.form-container {
+.forms-container {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -51,12 +51,18 @@ input {
   margin-top: 5px;
 }
 
+.input-container {
+  position: relative;
+}
+
 .show-password {
-  font-size: 14px;
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  font-size: 18px;
   color: #007bff;
   cursor: pointer;
-  margin-top: 5px;
-  text-align: right;
 }
 
 .show-password:hover {
@@ -64,7 +70,9 @@ input {
 }
 
 .submit-container {
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
 
 button {
@@ -75,6 +83,8 @@ button {
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
+  width: 100%;
+  max-width: 200px;
 }
 
 button:disabled {
@@ -92,7 +102,7 @@ button:hover:not(:disabled) {
 }
 
 .register-container a {
-  color: #007bff;
+  color: #00b3ff;
   text-decoration: none;
 }
 

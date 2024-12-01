@@ -13,8 +13,11 @@ function Dashboard() {
   const [selectedCategory, setSelectedCategory] = useState("today");
   const [showMovieSelector, setShowMovieSelector] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState(null);
-  const [trailerUrl, setTrailerUrl] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
   const [expandedTrendingMovie, setExpandedTrendingMovie] = useState(null);
+  const [expandedSearchMovie, setExpandedSearchMovie] = useState(null);
 
   const accessToken = localStorage.getItem("accessToken");
 
@@ -50,24 +53,6 @@ function Dashboard() {
     }
   }, [trendingMovies]);
 
-  const fetchTrailer = async (movieId) => {
-    try {
-      const response = await axios.get(
-        `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=YOUR_API_KEY`
-      );
-      const trailers = response.data.results.filter(
-        (video) => video.type === "Trailer" && video.site === "YouTube"
-      );
-      if (trailers.length > 0) {
-        setTrailerUrl(`https://www.youtube.com/watch?v=${trailers[0].key}`);
-      } else {
-        setTrailerUrl("");
-      }
-    } catch (error) {
-      console.error("Error fetching trailer", error);
-    }
-  };
-
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
     setShowMovieSelector(false);
@@ -75,7 +60,6 @@ function Dashboard() {
 
   const handleMovieSelect = (movie) => {
     setSelectedMovie(movie);
-    fetchTrailer(movie.tmdbId);
   };
 
   const handleAddMovieToTrending = () => {
@@ -88,6 +72,9 @@ function Dashboard() {
           )
         ) {
           updatedState[selectedCategory].push(selectedMovie);
+          alert(
+            `${selectedMovie.title} is added successfully in trending for ${selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}.`
+          );
         }
         return updatedState;
       });
@@ -97,35 +84,106 @@ function Dashboard() {
   };
 
   const handleRemoveMovieFromTrending = (movie, category) => {
-    setTrendingMovies((prevState) => {
-      const updatedState = { ...prevState };
-      updatedState[category] = updatedState[category].filter(
-        (m) => m.tmdbId !== movie.tmdbId
+    const confirmRemove = window.confirm(
+      `Are you sure you want to remove ${movie.title} from trending for ${category.charAt(0).toUpperCase() + category.slice(1)}?`
+    );
+    if (confirmRemove) {
+      setTrendingMovies((prevState) => {
+        const updatedState = { ...prevState };
+        updatedState[category] = updatedState[category].filter(
+          (m) => m.tmdbId !== movie.tmdbId
+        );
+        return updatedState;
+      });
+    }
+  };
+
+  const handleSearch = async () => {
+    setIsSearching(true);
+    if (searchQuery.trim()) {
+      const filteredMovies = savedMovies.filter((movie) =>
+        movie.title.toLowerCase().includes(searchQuery.toLowerCase())
       );
-      return { ...updatedState };
-    });
+      setSearchResults(filteredMovies);
+    } else {
+      setSearchResults([]);
+    }
+    setIsSearching(false);
+  };
+
+  const handleSearchKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
   };
 
   const handleTrendingMovieExpand = (movie) => {
     setExpandedTrendingMovie(movie);
-    fetchTrailer(movie.tmdbId);
+  };
+
+  const handleSearchMovieExpand = (movie) => {
+    setExpandedSearchMovie(movie);
   };
 
   const closeExpandedView = () => {
-    setSelectedMovie(null);
     setExpandedTrendingMovie(null);
-    setTrailerUrl("");
+    setExpandedSearchMovie(null);
   };
 
   const closeSelectedMovie = () => {
     setSelectedMovie(null);
   };
 
+  useEffect(() => {
+    if (searchQuery) {
+      handleSearch();
+    } else {
+      setSearchResults([]); 
+    }
+  }, [searchQuery]);
+
   return (
     <div className="dashboard">
-      <h1 className="dashboard-title">Dashboard</h1>
+      <h1 className="dashboard-title">Welcome to AnyWatch</h1>
 
       <section className="movies-section">
+        <div className="search-bar-container">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyPress={handleSearchKeyPress}
+            placeholder="Search for a movie..."
+          />
+        </div>
+        {isSearching && <p>Loading...</p>}
+
+        {searchQuery && !isSearching && searchResults.length > 0 && (
+          <div className="search-results-container">
+            <h3>Search Results:</h3>
+            <div className="movie-cards">
+              {searchResults.map((movie) => (
+                <div
+                  key={movie.tmdbId}
+                  className="movie-card"
+                  onClick={() => handleSearchMovieExpand(movie)}
+                >
+                  <img src={movie.posterPath} alt={movie.title} />
+                  <h3>{movie.title}</h3>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {searchQuery && !isSearching && searchResults.length === 0 && (
+          <div className="search-results-container">
+            <p>No results found.</p>
+          </div>
+        )}
+
+        <hr className="line-separator" />
+
         <div className="trending-header">
           <h2>TRENDING</h2>
           <div className="trending-buttons">
@@ -178,7 +236,6 @@ function Dashboard() {
                 <p>No movies selected for trending.</p>
               )}
             </div>
-
             <div className="add-movie-btn-container">
               <button
                 className="add-movie-btn"
@@ -201,15 +258,43 @@ function Dashboard() {
                 <strong>Overview:</strong> {expandedTrendingMovie.overview}
               </p>
               <p>
-                <strong>Popularity:</strong>{" "}
-                <span>{Math.round(expandedTrendingMovie.popularity)}</span>
+                <strong>Popularity:</strong> {Math.round(expandedTrendingMovie.popularity)}
+              </p>
+              <p>
+                <strong>Release Date:</strong> {expandedTrendingMovie.releaseDate}
+              </p>
+              <p>
+                <strong>Vote Average:</strong> {expandedTrendingMovie.voteAverage}
               </p>
               <div className="expanded-actions">
-                {trailerUrl && (
-                  <button onClick={() => window.open(trailerUrl, "_blank")}>
-                    Watch Trailer
-                  </button>
-                )}
+                <button className="close-expanded-view" onClick={closeExpandedView}>
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {expandedSearchMovie && (
+          <div className="expanded-movie-view">
+            <div className="expanded-poster">
+              <img src={expandedSearchMovie.posterPath} alt="Movie Poster" />
+            </div>
+            <div className="movie-details">
+              <h3>{expandedSearchMovie.title}</h3>
+              <p>
+                <strong>Overview:</strong> {expandedSearchMovie.overview}
+              </p>
+              <p>
+                <strong>Popularity:</strong> {expandedSearchMovie.popularity}
+              </p>
+              <p>
+                <strong>Release Date:</strong> {expandedSearchMovie.releaseDate}
+              </p>
+              <p>
+                <strong>Vote Average:</strong> {expandedSearchMovie.voteAverage}
+              </p>
+              <div className="expanded-actions">
                 <button className="close-expanded-view" onClick={closeExpandedView}>
                   Close
                 </button>
@@ -223,16 +308,18 @@ function Dashboard() {
             <h3>Select a Movie to Add</h3>
             <div className="movie-grid-scrollable">
               <div className="movie-grid">
-                {savedMovies.map((movie) => (
-                  <div
-                    key={movie.tmdbId}
-                    className="movie-card"
-                    onClick={() => handleMovieSelect(movie)}
-                  >
-                    <img src={movie.posterPath} alt={movie.title} />
-                    <h3>{movie.title}</h3>
-                  </div>
-                ))}
+                {isSearching && <p>Loading...</p>}
+                {!isSearching && !searchQuery &&
+                  savedMovies.map((movie) => (
+                    <div
+                      key={movie.tmdbId}
+                      className="movie-card"
+                      onClick={() => handleMovieSelect(movie)}
+                    >
+                      <img src={movie.posterPath} alt={movie.title} />
+                      <h3>{movie.title}</h3>
+                    </div>
+                  ))}
               </div>
             </div>
             {selectedMovie && (
@@ -256,7 +343,9 @@ function Dashboard() {
                   </p>
                   <div className="movie-selection-actions">
                     <button onClick={handleAddMovieToTrending}>
-                      Add to Trending{` for ${selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}`}
+                      Add to Trending for{" "}
+                      {selectedCategory.charAt(0).toUpperCase() +
+                        selectedCategory.slice(1)}
                     </button>
                     <button onClick={closeSelectedMovie}>Cancel</button>
                   </div>

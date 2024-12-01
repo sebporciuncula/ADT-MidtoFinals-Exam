@@ -20,12 +20,10 @@ const Lists = () => {
     getMovies();
   }, []);
 
-  // Filter movies based on the search term
   const filteredMovies = lists.filter((movie) =>
     movie.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Sort movies based on the sortConfig
   const sortedMovies = filteredMovies.sort((a, b) => {
     if (a[sortConfig.key] < b[sortConfig.key]) {
       return sortConfig.direction === 'asc' ? -1 : 1;
@@ -52,7 +50,6 @@ const Lists = () => {
     }
   };
 
-  // Handle sorting
   const requestSort = (key) => {
     let direction = 'asc';
     if (sortConfig.key === key && sortConfig.direction === 'asc') {
@@ -102,7 +99,7 @@ const Lists = () => {
                       navigate(`/main/movies/form/${movie.id}`);
                     }}
                   >
-                    Edit
+                    View
                   </button>
                   <button type='button' onClick={() => handleDelete(movie.id)}>
                     Delete
