@@ -1,0 +1,76 @@
+.page-title {
+  display: none; /* Removed the title */
+}
+
+.main-container {
+  padding: 2rem;
+}
+
+.search-bar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.search-input {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  width: 80%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.search-button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.search-button:hover {
+  background-color: #0056b3;
+}
+
+.list-container {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1;
+  gap: 1rem;
+}
+
+.featured-list-container {
+  width: 100%;
+  margin-bottom: 5rem;
+  aspect-ratio: 16 / 9;
+  position: relative;
+}
+
+.featured-backdrop {
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  display: flex;
+  align-items: flex-end;
+  transition: background-image 1s ease-in-out; /* Smooth transition for background */
+}
+
+.featured-movie-title {
+  font-weight: bold;
+  font-size: 3rem;
+  width: 100%;
+  padding: 2rem;
+}
+
+.backdrop-indicator {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 1.5rem;
+  opacity: 0.7;
+}

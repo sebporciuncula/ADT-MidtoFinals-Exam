@@ -1,0 +1,157 @@
+.movie-view-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.movie-header {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.movie-poster {
+  width: 150px; /* Adjusted size for movie poster */
+  height: 225px;
+  margin-right: 20px;
+  border-radius: 8px;
+}
+
+.movie-details-container {
+  flex: 1;
+}
+
+.movie-title {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.movie-overview {
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+.details-list {
+  margin-top: 10px;
+}
+
+.detail-item {
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
+
+.tabs-container {
+  margin-top: 40px;
+}
+
+.section-header {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.section-separator {
+  margin: 20px 0;
+}
+
+/* Cast & Crew Section */
+.scroll-section {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.cast-crew-list {
+  display: flex;
+  gap: 20px;
+}
+
+.cast-item {
+  text-align: center;
+  width: 150px; /* Adjusted width */
+}
+
+.cast-photo {
+  width: 100px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.character {
+  font-size: 0.9rem;
+  color: #777;
+}
+
+/* Horizontal Scroll for Videos and Photos */
+.horizontal-scroll {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+}
+
+.video-frame-container iframe {
+  width: 300px;
+  height: 170px;
+  border-radius: 8px;
+}
+
+.photos-section {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+}
+
+.photo-thumbnail {
+  width: 250px; /* Adjusted size */
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Scrollbar Styling */
+.horizontal-scroll::-webkit-scrollbar {
+  height: 8px; /* Customize scrollbar height */
+}
+
+.horizontal-scroll::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+.horizontal-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+/* Videos Section */
+.videos-section {
+  margin-top: 20px;
+}
+
+.videos-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.videos-table th,
+.videos-table td {
+  padding: 12px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.videos-table th {
+  background-color: #f4f4f4;
+}
+
+.videos-table button {
+  padding: 6px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.videos-table button:hover {
+  background-color: #0056b3;
+}
