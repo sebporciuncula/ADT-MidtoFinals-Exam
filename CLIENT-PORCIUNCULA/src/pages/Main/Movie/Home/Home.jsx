@@ -6,27 +6,34 @@ import MovieCards from '../../../../components/MovieCards/MovieCards';
 import { useMovieContext } from '../../../../context/MovieContext';
 
 const Home = () => {
-  const accessToken = localStorage.getItem('accessToken');
   const navigate = useNavigate();
   const [featuredMovie, setFeaturedMovie] = useState(null);
-  const [index, setIndex] = useState(0); // Keep track of current featured movie index
+  const [index, setIndex] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
   const { movieList, setMovieList, setMovie } = useMovieContext();
 
+  const BEARER_TOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkNTg1YWU1ZTA3MzMzZmFhN2Y3M2FmNGQ4MWVhNDRlMCIsIm5iZiI6MTczMjYwNTY1NC42NCwic3ViIjoiNjc0NTc2ZDYwNjQyNGJkZTI3MDRkMTZkIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.ETF-ehpDK5wiUSMmLRQ1sLKE_aC5C4mBiEoh8-7noIM";
+
   const getMovies = (query = '') => {
-    // Get the movies from the API or database
+    // Fetch movies from API with optional search query
     axios
-      .get(`/movies?search=${query}`, {
+      .get(`/movies`, {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: BEARER_TOKEN, // Use the BEARER_TOKEN here
         },
       })
       .then((response) => {
-        setMovieList(response.data);
-        const random = Math.floor(Math.random() * response.data.length);
-        setFeaturedMovie(response.data[random]);
+        if (response.data && response.data.length) {
+          setMovieList(response.data);
+          const random = Math.floor(Math.random() * response.data.length);
+          setFeaturedMovie(response.data[random]);
+        } else {
+          console.log("No movies found in the API response");
+        }
       })
-      .catch((e) => console.log(e));
+      .catch((error) => {
+        console.error("Error fetching movies:", error);
+      });
   };
 
   const handleSearch = (e) => {
@@ -43,7 +50,7 @@ const Home = () => {
       if (movieList.length) {
         setIndex((prevIndex) => (prevIndex + 1) % movieList.length); // Increment index and loop around
       }
-    }, 5000); // Change every 5 seconds for smooth transition
+    }, 5000); // Change featured movie every 5 seconds for smooth transition
 
     return () => clearInterval(interval); // Cleanup the interval on unmount
   }, [movieList]);
@@ -54,8 +61,14 @@ const Home = () => {
     }
   }, [index, movieList]);
 
+  // Filter movie list based on search query
+  const filteredMovies = movieList.filter((movie) =>
+    movie.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="main-container">
+      {/* Search Bar */}
       <div className="search-bar-container">
         <input
           type="text"
@@ -66,6 +79,8 @@ const Home = () => {
         />
         <button className="search-button" onClick={handleSearch}>Search</button>
       </div>
+
+      {/* Featured Movie Section */}
       {featuredMovie && movieList.length ? (
         <div className="featured-list-container">
           <div
@@ -78,29 +93,45 @@ const Home = () => {
                   : featuredMovie.posterPath
               })`,
             }}
+            onClick={() => {
+              // Navigate to the movie details page when the backdrop is clicked
+              navigate(`/main/view/${featuredMovie.id}`);
+              setMovie(featuredMovie); // Set the selected movie to context
+            }}
           >
             <span className="featured-movie-title">{featuredMovie.title}</span>
             {/* Dot indicator for the backdrop */}
             <div className="backdrop-indicator">
-              <span>...</span>
+              {movieList.map((_, idx) => (
+                <span
+                  key={idx}
+                  className={idx === index ? 'active' : ''}
+                ></span>
+              ))}
             </div>
           </div>
         </div>
       ) : (
         <div className="featured-list-container-loader"></div>
       )}
+
+      {/* Movie Cards List */}
       <div className="list-container">
-        {movieList.map((movie) => (
-          <MovieCards
-            key={movie.id}
-            movie={movie}
-            onClick={() => {
-              // Navigate to the movie details page
-              navigate(`/main/view/${movie.id}`);
-              setMovie(movie); // Set the selected movie to context
-            }}
-          />
-        ))}
+        {filteredMovies.length > 0 ? (
+          filteredMovies.map((movie) => (
+            <MovieCards
+              key={movie.id}
+              movie={movie}
+              onClick={() => {
+                // Navigate to the movie details page when a movie card is clicked
+                navigate(`/main/view/${movie.id}`);
+                setMovie(movie); // Set the selected movie to context
+              }}
+            />
+          ))
+        ) : (
+          <div>No movies found</div>
+        )}
       </div>
     </div>
   );

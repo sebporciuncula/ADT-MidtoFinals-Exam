@@ -71,7 +71,7 @@ const Login = () => {
     <div className="Login">
       <div className="mainform-container">
         <form>
-          <div className="form-container">
+          <div className="forms-container">
             <h3>Login</h3>
 
             {error && <span className="login errors">{error}</span>}

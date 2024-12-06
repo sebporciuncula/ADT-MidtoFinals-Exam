@@ -8,7 +8,7 @@ function Main() {
 
   const handleLogout = () => {
     localStorage.removeItem('accessToken');
-    navigate('/login');  // Navigate to the login page after logout
+    navigate('/login');  
   };
 
   useEffect(() => {
@@ -29,18 +29,18 @@ function Main() {
             <li>
               <a onClick={(e) => {
                 e.preventDefault();  // Prevent default anchor behavior
-                navigate('/'); // Navigate to the home page but prevent reload
+                navigate('/'); 
               }}>
                 Movies
               </a>
             </li>
             {accessToken ? (
               <li className='logout'>
-                <a onClick={handleLogout}>Logout</a>  {/* Logout functionality */}
+                <a onClick={handleLogout}>Logout</a> 
               </li>
             ) : (
               <li className='login'>
-                <a onClick={() => navigate('/login')}>Login</a>  {/* Navigate to login page */}
+                <a onClick={() => navigate('/login')}>Login</a>  
               </li>
             )}
           </ul>
