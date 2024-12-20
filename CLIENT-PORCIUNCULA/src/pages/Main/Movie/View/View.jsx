@@ -13,8 +13,7 @@ function View() {
   const { movieId } = useParams();
   const navigate = useNavigate();
   const [selectedTab, setSelectedTab] = useState('cast');
-  const [selectedCast, setSelectedCast] = useState(null);  // to store selected cast member
-
+  const [selectedCast, setSelectedCast] = useState(null); 
   const BEARER_TOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkNTg1YWU1ZTA3MzMzZmFhN2Y3M2FmNGQ4MWVhNDRlMCIsIm5iZiI6MTczMjYwNTY1NC42NCwic3ViIjoiNjc0NTc2ZDYwNjQyNGJkZTI3MDRkMTZkIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.ETF-ehpDK5wiUSMmLRQ1sLKE_aC5C4mBiEoh8-7noIM"; 
 
   useEffect(() => {
@@ -45,7 +44,7 @@ function View() {
         headers: { Authorization: BEARER_TOKEN },
       }).then((response) => {
         const { cast, crew } = response.data;
-        setCast(cast);
+        setCast(cast); 
         setCrew(crew);
       });
 
@@ -67,8 +66,12 @@ function View() {
     axios.get(`https://api.themoviedb.org/3/person/${castMemberId}`, {
       headers: { Authorization: BEARER_TOKEN },
     }).then((response) => {
-      setSelectedCast(response.data);  // Show additional details of the selected cast
+      setSelectedCast(response.data);
     });
+  };
+
+  const closeSelectedCast = () => {
+    setSelectedCast(null); 
   };
 
   const renderTabContent = () => {
@@ -76,21 +79,44 @@ function View() {
       case 'cast':
         return (
           <div className="tabs-container">
-            <div className="horizontal-scroll cast-section">
-              {cast.slice(0, 10).map((castMember) => (
-                <div key={castMember.id} className="cast-member" onClick={() => handleCastClick(castMember.id)}>
+          
+            {selectedCast ? (
+              <div className="selected-cast-section center-cast">
+                <button className="close-button" onClick={closeSelectedCast}>X</button>
+                <div className="cast-member-detail">
                   <img
                     className="cast-photo"
-                    src={castMember.profile_path ? `https://image.tmdb.org/t/p/w200${castMember.profile_path}` : 'https://via.placeholder.com/200?text=No+Image'}
-                    alt={castMember.name}
+                    src={selectedCast.profile_path ? `https://image.tmdb.org/t/p/w200${selectedCast.profile_path}` : 'https://via.placeholder.com/200?text=No+Image'}
+                    alt={selectedCast.name}
                   />
                   <div className="cast-info">
-                    <h4>{castMember.name}</h4>
-                    <p>{castMember.character}</p>
+                    <h4>{selectedCast.name}</h4>
+                    <p>{selectedCast.biography || 'No biography available.'}</p>
                   </div>
                 </div>
-              ))}
-            </div>
+                <hr className="cast-separator" />
+              </div>
+            ) : (
+              <div className="horizontal-scroll cast-section">
+                {cast.map((castMember) => (
+                  <div
+                    key={castMember.id}
+                    className="cast-member"
+                    onClick={() => handleCastClick(castMember.id)}
+                  >
+                    <img
+                      className="cast-photo"
+                      src={castMember.profile_path ? `https://image.tmdb.org/t/p/w200${castMember.profile_path}` : 'https://via.placeholder.com/200?text=No+Image'}
+                      alt={castMember.name}
+                    />
+                    <div className="cast-info">
+                      <h4>{castMember.name}</h4>
+                      <p>{castMember.character}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         );
       case 'crew':
@@ -153,20 +179,20 @@ function View() {
     <>
       {movie && (
         <div className="movie-detail-container">
-          {/* Back Button */}
+          
           <button className="back-button" onClick={() => navigate(-1)}>
             &#8592; Back
           </button>
 
           <div className="movie-header">
-            {/* Movie Poster */}
+            
             <img
               className="movie-poster"
               src={movie.poster_path ? `https://image.tmdb.org/t/p/original/${movie.poster_path}` : 'https://via.placeholder.com/200x300?text=No+Image'}
               alt={movie.original_title || 'No Poster Available'}
             />
 
-            {/* Movie Details */}
+           
             <div className="movie-details-container">
               <h2 className="movie-title">{movie.original_title}</h2>
               <p className="movie-overview">{movie.overview}</p>
@@ -175,7 +201,7 @@ function View() {
             </div>
           </div>
 
-          {/* Tab Buttons */}
+         
           <div className="tabs">
             <button onClick={() => setSelectedTab('cast')} className={selectedTab === 'cast' ? 'active-tab' : ''}>Cast</button>
             <button onClick={() => setSelectedTab('crew')} className={selectedTab === 'crew' ? 'active-tab' : ''}>Crew</button>
@@ -183,7 +209,7 @@ function View() {
             <button onClick={() => setSelectedTab('videos')} className={selectedTab === 'videos' ? 'active-tab' : ''}>Videos</button>
           </div>
 
-          {/* Tab Content */}
+          
           {renderTabContent()}
         </div>
       )}

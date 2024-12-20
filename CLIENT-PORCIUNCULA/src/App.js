@@ -3,18 +3,18 @@
   import Main from './pages/Main/Main';
   import Home from './pages/Main/Movie/Home/Home';
   import View from './pages/Main/Movie/View/View';
-  import Login from './pages/Public/Login/Login'; // Importing Login page
-  import Register from './pages/Public/Register/Register'; // Importing Register page
+  import Login from './pages/Public/Login/Login'; 
+  import Register from './pages/Public/Register/Register'; 
   import MovieContextProvider from './context/MovieContext';
 
   const router = createBrowserRouter([
-    { path: '/', element: <Login /> }, // Login route
-    { path: '/register', element: <Register /> }, // Registration route
+    { path: '/', element: <Login /> }, 
+    { path: '/register', element: <Register /> }, 
     {
       path: '/main',
-      element: <Main />, // Main layout
+      element: <Main />, 
       children: [
-        { path: '/main', element: <Home /> }, // "/main" -> Home
+        { path: '/main', element: <Home /> }, 
         { path: 'view/:movieId', element: <View /> }, 
       ],
     },

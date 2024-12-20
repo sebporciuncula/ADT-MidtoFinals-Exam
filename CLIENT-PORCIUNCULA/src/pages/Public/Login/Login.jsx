@@ -17,12 +17,12 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // Handle password visibility toggle
+  
   const handleShowPassword = useCallback(() => {
     setIsShowPassword((prevState) => !prevState);
   }, []);
 
-  // Handle input change with debouncing
+  
   const handleOnChange = (event, type) => {
     setDebounceState(false);
     setIsFieldsDirty(true);
@@ -39,7 +39,7 @@ const Login = () => {
     }
   };
 
-  // Handle login request
+  
   const handleLogin = async () => {
     const data = { email, password };
     setStatus('loading');
@@ -50,9 +50,9 @@ const Login = () => {
       });
 
       console.log(response);
-      // Store access token in local storage
+      
       localStorage.setItem('accessToken', response.data.access_token);
-      // Navigate to the main dashboard
+      
       navigate('/main');
       setStatus('idle');
     } catch (e) {
@@ -62,7 +62,7 @@ const Login = () => {
     }
   };
 
-  // Handle debouncing effect
+  
   useEffect(() => {
     setDebounceState(true);
   }, [userInputDebounce]);

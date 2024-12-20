@@ -15,11 +15,11 @@ const Home = () => {
   const BEARER_TOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkNTg1YWU1ZTA3MzMzZmFhN2Y3M2FmNGQ4MWVhNDRlMCIsIm5iZiI6MTczMjYwNTY1NC42NCwic3ViIjoiNjc0NTc2ZDYwNjQyNGJkZTI3MDRkMTZkIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.ETF-ehpDK5wiUSMmLRQ1sLKE_aC5C4mBiEoh8-7noIM";
 
   const getMovies = (query = '') => {
-    // Fetch movies from API with optional search query
+    
     axios
       .get(`/movies`, {
         headers: {
-          Authorization: BEARER_TOKEN, // Use the BEARER_TOKEN here
+          Authorization: BEARER_TOKEN, 
         },
       })
       .then((response) => {
@@ -38,21 +38,21 @@ const Home = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    getMovies(searchQuery); // Fetch movies based on the search query
+    getMovies(searchQuery); 
   };
 
   useEffect(() => {
-    getMovies(); // Initially load movies
+    getMovies(); 
   }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
       if (movieList.length) {
-        setIndex((prevIndex) => (prevIndex + 1) % movieList.length); // Increment index and loop around
+        setIndex((prevIndex) => (prevIndex + 1) % movieList.length); 
       }
-    }, 5000); // Change featured movie every 5 seconds for smooth transition
+    }, 5000); 
 
-    return () => clearInterval(interval); // Cleanup the interval on unmount
+    return () => clearInterval(interval); 
   }, [movieList]);
 
   useEffect(() => {
@@ -61,14 +61,14 @@ const Home = () => {
     }
   }, [index, movieList]);
 
-  // Filter movie list based on search query
+  
   const filteredMovies = movieList.filter((movie) =>
     movie.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
     <div className="main-container">
-      {/* Search Bar */}
+      
       <div className="search-bar-container">
         <input
           type="text"
@@ -80,7 +80,7 @@ const Home = () => {
         <button className="search-button" onClick={handleSearch}>Search</button>
       </div>
 
-      {/* Featured Movie Section */}
+     
       {featuredMovie && movieList.length ? (
         <div className="featured-list-container">
           <div
@@ -94,13 +94,13 @@ const Home = () => {
               })`,
             }}
             onClick={() => {
-              // Navigate to the movie details page when the backdrop is clicked
+              
               navigate(`/main/view/${featuredMovie.id}`);
-              setMovie(featuredMovie); // Set the selected movie to context
+              setMovie(featuredMovie); 
             }}
           >
             <span className="featured-movie-title">{featuredMovie.title}</span>
-            {/* Dot indicator for the backdrop */}
+            
             <div className="backdrop-indicator">
               {movieList.map((_, idx) => (
                 <span
@@ -115,7 +115,7 @@ const Home = () => {
         <div className="featured-list-container-loader"></div>
       )}
 
-      {/* Movie Cards List */}
+     
       <div className="list-container">
         {filteredMovies.length > 0 ? (
           filteredMovies.map((movie) => (
@@ -123,9 +123,9 @@ const Home = () => {
               key={movie.id}
               movie={movie}
               onClick={() => {
-                // Navigate to the movie details page when a movie card is clicked
+                
                 navigate(`/main/view/${movie.id}`);
-                setMovie(movie); // Set the selected movie to context
+                setMovie(movie); 
               }}
             />
           ))

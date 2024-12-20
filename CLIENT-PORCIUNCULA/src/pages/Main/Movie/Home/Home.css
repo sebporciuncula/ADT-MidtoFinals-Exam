@@ -1,5 +1,5 @@
 .page-title {
-  display: none; /* Removed the title */
+  display: none; 
 }
 
 .main-container {
@@ -56,7 +56,7 @@
   display: flex;
   align-items: flex-end;
   transition: background-image 1s ease-in-out;
-  padding-bottom: 3rem; /* Add some space at the bottom */
+  padding-bottom: 3rem; 
 }
 
 .featured-movie-title {
@@ -64,17 +64,17 @@
   font-size: 3rem;
   width: 100%;
   padding: 2rem;
-  z-index: 1; /* Ensure title is above the indicator */
+  z-index: 1; 
 }
 
 .backdrop-indicator {
   position: absolute;
-  bottom: 10px; /* Move indicator closer to the bottom */
+  bottom: 10px; 
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 10px; /* Add spacing between the dots */
-  z-index: 1; /* Keep the indicator above any background elements */
+  gap: 10px; 
+  z-index: 1; 
 }
 
 .backdrop-indicator span {
@@ -86,7 +86,7 @@
 }
 
 .backdrop-indicator span.active {
-  background-color: #007bff; /* Highlight color */
-  transform: scale(1.3); /* Slightly enlarge the active dot */
+  background-color: #007bff; 
+  transform: scale(1.3); 
 }
 

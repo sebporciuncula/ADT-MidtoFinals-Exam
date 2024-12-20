@@ -17,7 +17,7 @@ function Main() {
       accessToken === '' ||
       accessToken === null
     ) {
-      navigate('/login');  // If no access token, redirect to login page
+      navigate('/login');  
     }
   }, [accessToken, navigate]);
 
@@ -28,7 +28,7 @@ function Main() {
           <ul>
             <li>
               <a onClick={(e) => {
-                e.preventDefault();  // Prevent default anchor behavior
+                e.preventDefault();  
                 navigate('/'); 
               }}>
                 Movies
