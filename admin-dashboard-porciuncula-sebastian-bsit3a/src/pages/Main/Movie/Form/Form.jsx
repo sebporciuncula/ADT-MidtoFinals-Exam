@@ -13,12 +13,12 @@ const Form = () => {
   const [videos, setVideos] = useState([]);
   const [photos, setPhotos] = useState([]);
   const [selectedTab, setSelectedTab] = useState("cast");
-  const [selectedCast, setSelectedCast] = useState(null); // New state for selected cast member details
+  const [selectedCast, setSelectedCast] = useState(null); 
   const navigate = useNavigate();
   let { movieId } = useParams();
 
   const BEARER_TOKEN =
-    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5YTdiNmUyNGJkNWRkNjhiNmE1ZWFjZjgyNWY3NGY5ZCIsIm5iZiI6MTcyOTI5NzI5Ny4wNzMzNTEsInN1YiI6IjY2MzhlZGM0MmZhZjRkMDEzMGM2NzM3NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ZIX4EF2yAKl6NwhcmhZucxSQi1rJDZiGG80tDd6_9XI";
+    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkNTg1YWU1ZTA3MzMzZmFhN2Y3M2FmNGQ4MWVhNDRlMCIsIm5iZiI6MTczMjYwNTY1NC42NCwic3ViIjoiNjc0NTc2ZDYwNjQyNGJkZTI3MDRkMTZkIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.ETF-ehpDK5wiUSMmLRQ1sLKE_aC5C4mBiEoh8-7noIM";
 
   const handleSearch = useCallback(() => {
     if (query.trim() === "") return;
@@ -80,7 +80,7 @@ const Form = () => {
       console.error("Error saving movie:", error);
       alert("Failed to save the movie. Please try again.");
     }
-  };
+  };  
 
   useEffect(() => {
     if (movieId) {
@@ -98,9 +98,7 @@ const Form = () => {
         setSelectedMovie(tempData);
       });
     }
-  }, [movieId]);
-
-  useEffect(() => {
+    
     if (selectedMovie) {
       axios({
         method: "get",
@@ -229,7 +227,7 @@ const Form = () => {
                   Release Date: <span>{selectedMovie.release_date}</span>
                 </div>
                 <div className="detail-item">
-                  Vote Average: <span>{selectedMovie.vote_average} / 10</span>
+                  Vote Average: <span>{selectedMovie.vote_average} </span>
                 </div>
               </div>
             </div>

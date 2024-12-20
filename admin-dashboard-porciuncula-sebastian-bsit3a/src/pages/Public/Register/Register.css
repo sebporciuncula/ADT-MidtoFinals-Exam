@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f9f9f9;
+  background-color: #b7ecf5;;
 }
 
 .main-container {
@@ -58,7 +58,7 @@ input {
   right: 10px;
   transform: translateY(-50%);
   font-size: 18px;
-  color: #007bff;
+  color: #7a7a7a;
   cursor: pointer;
 }
 
@@ -80,7 +80,7 @@ input {
 
 button {
   padding: 12px 20px;
-  background-color: #007bff;
+  background-color: #10cbfe;
   color: #fff;
   border: none;
   border-radius: 4px;

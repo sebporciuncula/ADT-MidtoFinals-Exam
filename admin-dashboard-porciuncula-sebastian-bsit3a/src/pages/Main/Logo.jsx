@@ -1,4 +1,3 @@
-// Logo.js
 import React from 'react';
 
 const Logo = () => {
@@ -10,7 +9,7 @@ const Logo = () => {
       height="50"
       fill="#2196F3"
     >
-      {/* Circle with a simple 'M' in the middle */}
+      
       <circle cx="50" cy="50" r="45" stroke="black" strokeWidth="5" fill="#2196F3" />
       <text
         x="50%"
